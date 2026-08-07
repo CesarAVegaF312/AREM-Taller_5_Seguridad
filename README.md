@@ -6,6 +6,10 @@ Analizar los riesgos de seguridad en una parte crítica del sistema usando el ma
 
 ---
 
+## 📘 Guía paso a paso
+
+Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Seguridad con STRIDE**](clase/guia_paso_a_paso_stride.md). Incluye las 6 categorías STRIDE explicadas, la metodología de 5 pasos (de un diagrama de flujo de datos a una tabla de riesgo priorizada), un ejemplo completo construido paso a paso sobre el flujo de acceso a cursos de EdukIT, y una tabla de errores comunes.
+
 ## 🎓 Caso base de referencia: EdukIT (Plataforma de Educación Virtual)
 
 EdukIT es una plataforma de educación en línea que ofrece cursos certificados para estudiantes en América Latina. Administra el acceso a contenido educativo, evaluaciones, interacción con docentes y pagos por suscripción. El sistema gestiona información sensible como historial académico, datos personales, medios de pago y actividad del usuario. Evaluar la seguridad de estos procesos a través de un marco como STRIDE permite anticipar amenazas como suplantación, filtración de datos o accesos no autorizados, y diseñar estrategias de mitigación alineadas con las necesidades de protección de la información educativa.
@@ -28,10 +32,16 @@ EdukIT es una plataforma de educación en línea que ofrece cursos certificados 
 
 Durante la clase se espera que el equipo:
 
-- Seleccione uno de los flujos críticos del sistema EdukIT.
-- Aplique el marco STRIDE sobre ese flujo usando una tabla de análisis de amenazas.
-- Identifique vulnerabilidades, impactos posibles y estrategias de mitigación.
-- Registre todo en una tabla editable y justifique sus hallazgos.
+Siga la metodología de 5 pasos de la [guía paso a paso](clase/guia_paso_a_paso_stride.md) para analizar un flujo crítico de EdukIT:
+
+1. Seleccione uno de los flujos críticos del sistema EdukIT y dibuje su diagrama de flujo de datos (DFD).
+2. Identifique los procesos, almacenes de datos y flujos a analizar.
+3. Aplique las 6 categorías STRIDE sobre los elementos relevantes.
+4. Evalúe el impacto y proponga una mitigación concreta para cada amenaza.
+5. Priorice los hallazgos por riesgo y valide la tabla con la [checklist de autoevaluación](clase/guia_paso_a_paso_stride.md#5-checklist-de-autoevaluación-antes-de-entregar).
+
+- Registre todo en una tabla editable (`tabla-stride-clase.xlsx`) y justifique sus hallazgos.
+- Reciba retroalimentación del docente y registre avances en `clase/notas.md` (use la [plantilla de notas](plantillas/plantilla_notas.md)).
 
 ---
 
@@ -39,28 +49,37 @@ Durante la clase se espera que el equipo:
 
 Después de la clase, el equipo debe:
 
-- Aplicar STRIDE sobre un proceso o componente crítico del sistema del cliente real.
-- Elaborar una tabla con amenazas, impactos, controles propuestos y nivel de riesgo.
-- Redactar un informe explicando el análisis de seguridad.
-- Investigar buenas prácticas de seguridad aplicadas al sector del cliente (educación, salud, logística, etc.).
+- Aplicar STRIDE sobre un proceso o componente crítico del sistema del cliente real, siguiendo los mismos 5 pasos de la metodología.
+- Elaborar una tabla con amenazas, impactos, controles propuestos y nivel de riesgo (`entrega/tabla-stride-cliente.xlsx`).
+- Redactar el informe en `entrega/informe.md` usando la [plantilla de informe del taller](plantillas/plantilla_informe_taller.md); explicar el análisis de seguridad y las diferencias con el caso base.
+- Investigar buenas prácticas de seguridad aplicadas al sector del cliente (educación, salud, logística, etc.), y registrar las fuentes en `entrega/referencias.md` con la [plantilla de referencias](plantillas/plantilla_referencias.md).
 
 ---
 
 ## 📁 Estructura esperada del repositorio
 
-```
+```text
 taller-05-seguridad-stride/
 ├── README.md
 ├── clase/
+│   ├── guia_paso_a_paso_stride.md   # Categorías STRIDE, metodología de 5 pasos y ejemplo guiado
 │   ├── tabla-stride-clase.xlsx
-│   └── notas.md
+│   └── notas.md                     # Ver plantillas/plantilla_notas.md
 ├── entrega/
 │   ├── tabla-stride-cliente.xlsx
-│   ├── informe.md
-│   └── referencias.md
+│   ├── informe.md                   # Ver plantillas/plantilla_informe_taller.md
+│   └── referencias.md               # Ver plantillas/plantilla_referencias.md
+└── plantillas/
+    ├── plantilla_informe_taller.md
+    ├── plantilla_notas.md
+    └── plantilla_referencias.md
 ```
 
 ---
+
+## ⚠️ Errores comunes
+
+Antes de entregar, compare su tabla contra los errores más frecuentes (amenazas genéricas, categorías STRIDE omitidas, mitigaciones vagas, hallazgos sin priorizar) documentados en la [sección 4 de la guía paso a paso](clase/guia_paso_a_paso_stride.md#4-errores-comunes-a-evitar).
 
 ## 📤 Entregables
 
