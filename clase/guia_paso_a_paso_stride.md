@@ -128,4 +128,29 @@ Se agregan probabilidad y riesgo resultante (Impacto × Probabilidad), y se orde
 
 ---
 
+## 6. Vista ArchiMate equivalente
+
+STRIDE no tiene una capa propia en ArchiMate — sus mitigaciones se modelan como **Requirement** en la capa de Motivación (ver la [Guía de Notación ArchiMate](https://github.com/CesarAVegaF312/AREM-ArchiMate/blob/main/guia_notacion_archimate.md)), conectados con **Influence** al elemento de Aplicación o Tecnología que deben proteger.
+
+```mermaid
+flowchart TD
+    subgraph motivacion["Motivación"]
+        req(["📋 Requisito: autenticación multifactor"])
+    end
+    subgraph aplicacion["Aplicación"]
+        auth["Sistema de Autenticación"]
+    end
+
+    req -.->|"influye sobre"| auth
+
+    classDef motivacion fill:#ccccff,color:#000,stroke:#6666cc;
+    classDef aplicacion fill:#99ccff,color:#000,stroke:#3366cc;
+    class req motivacion
+    class auth aplicacion
+```
+
+Cada fila de la tabla de priorización (Paso 5) es candidata a convertirse en un `Requirement`: la columna "Mitigación propuesta" es el texto del requisito, y la columna "Categoría/Elemento" indica sobre qué componente de Aplicación o Tecnología aplica la relación **Influence**.
+
+---
+
 _Esta guía hace parte del Taller 5 de Evaluación de Seguridad con STRIDE — curso Arquitectura Empresarial, Universidad de La Sabana._
