@@ -40,6 +40,8 @@ Siga la metodología de 5 pasos de la [guía paso a paso](clase/guia_paso_a_paso
 4. Evalúe el impacto y proponga una mitigación concreta para cada amenaza.
 5. Priorice los hallazgos por riesgo y valide la tabla con la [checklist de autoevaluación](clase/guia_paso_a_paso_stride.md#5-checklist-de-autoevaluación-antes-de-entregar).
 
+Como referencia adicional durante el ejercicio, consulte [`clase/stride_analisis_ejemplos.xlsx`](clase/stride_analisis_ejemplos.xlsx): un banco de 10 amenazas STRIDE ya redactadas sobre distintos sistemas, útil para ver el nivel de detalle esperado en cada columna.
+
 - Registre todo en una tabla editable (`tabla-stride-clase.xlsx`) y justifique sus hallazgos.
 - Reciba retroalimentación del docente y registre avances en `clase/notas.md` (use la [plantilla de notas](plantillas/plantilla_notas.md)).
 
@@ -50,7 +52,7 @@ Siga la metodología de 5 pasos de la [guía paso a paso](clase/guia_paso_a_paso
 Después de la clase, el equipo debe:
 
 - Aplicar STRIDE sobre un proceso o componente crítico del sistema del cliente real, siguiendo los mismos 5 pasos de la metodología.
-- Elaborar una tabla con amenazas, impactos, controles propuestos y nivel de riesgo (`entrega/tabla-stride-cliente.xlsx`).
+- Elaborar una tabla con amenazas, impactos, controles propuestos y nivel de riesgo (`entrega/tabla-stride-cliente.xlsx`), usando la [plantilla oficial](plantillas/plantilla_analisis_stride.xlsx). Las columnas enriquecidas — **Escenario de Ataque**, **Controles de Seguridad Existentes**, **Responsable** y **Estado** — ahora son obligatorias al diligenciarla; no basta con describir la amenaza y su mitigación.
 - Redactar el informe en `entrega/informe.md` usando la [plantilla de informe del taller](plantillas/plantilla_informe_taller.md); explicar el análisis de seguridad y las diferencias con el caso base.
 - Investigar buenas prácticas de seguridad aplicadas al sector del cliente (educación, salud, logística, etc.), y registrar las fuentes en `entrega/referencias.md` con la [plantilla de referencias](plantillas/plantilla_referencias.md).
 
@@ -62,14 +64,16 @@ Después de la clase, el equipo debe:
 taller-05-seguridad-stride/
 ├── README.md
 ├── clase/
-│   ├── guia_paso_a_paso_stride.md   # Categorías STRIDE, metodología de 5 pasos y ejemplo guiado
+│   ├── guia_paso_a_paso_stride.md      # Categorías STRIDE, metodología de 5 pasos y ejemplo guiado
+│   ├── stride_analisis_ejemplos.xlsx   # Banco de 10 amenazas STRIDE de ejemplo (referencia adicional)
 │   ├── tabla-stride-clase.xlsx
-│   └── notas.md                     # Ver plantillas/plantilla_notas.md
+│   └── notas.md                        # Ver plantillas/plantilla_notas.md
 ├── entrega/
 │   ├── tabla-stride-cliente.xlsx
-│   ├── informe.md                   # Ver plantillas/plantilla_informe_taller.md
-│   └── referencias.md               # Ver plantillas/plantilla_referencias.md
+│   ├── informe.md                      # Ver plantillas/plantilla_informe_taller.md
+│   └── referencias.md                  # Ver plantillas/plantilla_referencias.md
 └── plantillas/
+    ├── plantilla_analisis_stride.xlsx  # Plantilla oficial (hojas Plantilla_STRIDE y Ejemplo_STRIDE)
     ├── plantilla_informe_taller.md
     ├── plantilla_notas.md
     └── plantilla_referencias.md
