@@ -69,40 +69,42 @@ flowchart LR
 
 ### Paso 3 — Aplicar las 6 categorías STRIDE
 
-Se formula una amenaza concreta por categoría, señalando el elemento exacto sobre el que ocurre (todavía sin impacto ni mitigación):
+Se formula una amenaza concreta por categoría, señalando el elemento exacto sobre el que ocurre y qué control ya existe hoy frente a ella (todavía sin impacto ni mitigación — eso se agrega en el Paso 4):
 
-| Categoría | Elemento | Amenaza concreta |
-|---|---|---|
-| Spoofing | E1 / F1 | Un atacante se hace pasar por un estudiante usando credenciales robadas o phishing. |
-| Tampering | F3 | El token de sesión es interceptado y modificado en tránsito si la comunicación no usa TLS. |
-| Repudiation | P1 | Un estudiante o administrador realiza una acción sensible (ej. cambia una nota) y luego niega haberlo hecho, por falta de registro de auditoría. |
-| Information Disclosure | D1 | Exposición de datos personales o notas académicas por una consulta sin control de acceso adecuado. |
-| Denial of Service | P2 | Un atacante satura las solicitudes de contenido y deja el módulo de cursos inaccesible durante un examen. |
-| Elevation of Privilege | F4 | Un estudiante manipula el parámetro de rol en la solicitud para acceder a funciones de docente o administrador. |
+| ID | Componente / Activo | Tipo STRIDE | Descripción de la Amenaza | Escenario de Ataque | Controles de Seguridad Existentes |
+|---|---|---|---|---|---|
+| T1 | Sistema de Autenticación (P1) / Credenciales (F1) | Spoofing | Un atacante se hace pasar por un estudiante usando credenciales robadas o phishing. | Atacante usa credenciales robadas vía phishing para iniciar sesión. | Autenticación con usuario y contraseña, sin MFA. |
+| T2 | Token de sesión (F3) | Tampering | El token de sesión es interceptado y modificado en tránsito si la comunicación no usa TLS. | Atacante intercepta la comunicación en una red no segura (ej. WiFi público) y modifica el token antes de que llegue al servidor. | Comunicación cifrada con HTTPS en el flujo principal, sin verificación de firma del token en cada solicitud. |
+| T3 | Sistema de Autenticación (P1) — registro de acciones | Repudiation | Un estudiante o administrador realiza una acción sensible (ej. cambia una nota) y luego niega haberlo hecho, por falta de registro de auditoría. | Un docente cambia una calificación desde el panel y luego niega la acción al no existir registro con marca de tiempo y usuario. | Registro de accesos básico, sin logs de auditoría con marca de tiempo y usuario para acciones sensibles. |
+| T4 | BD de Usuarios (D1) | Information Disclosure | Exposición de datos personales o notas académicas por una consulta sin control de acceso adecuado. | Atacante explota un endpoint de consulta sin validar permisos y descarga el historial académico de otros estudiantes. | Control de acceso a nivel de aplicación, sin validación de permisos a nivel de consulta a la BD. |
+| T5 | Módulo de Cursos (P2) | Denial of Service | Un atacante satura las solicitudes de contenido y deja el módulo de cursos inaccesible durante un examen. | Atacante lanza un ataque de flooding contra el endpoint de contenido de cursos durante la semana de exámenes. | Balanceador de carga básico, sin límite de tasa (rate limiting) configurado. |
+| T6 | Solicitud de curso con rol (F4) | Elevation of Privilege | Un estudiante manipula el parámetro de rol en la solicitud para acceder a funciones de docente o administrador. | Estudiante modifica manualmente el campo `role` en el payload de la solicitud para obtener acceso de administrador. | Validación de rol en el cliente (frontend), sin revalidación estricta en el servidor. |
 
 ### Paso 4 — Evaluar impacto y proponer mitigación
 
-| Categoría | Amenaza | Impacto | Mitigación propuesta |
-|---|---|---|---|
-| Spoofing | Suplantación de estudiante | Alto — acceso no autorizado a la cuenta y sus datos | Autenticación multifactor (MFA) y bloqueo tras intentos fallidos |
-| Tampering | Alteración del token de sesión | Alto — secuestro de sesión activa | Forzar HTTPS/TLS en todas las comunicaciones y firmar/verificar el token (JWT) |
-| Repudiation | Negación de una acción realizada | Medio — dificulta resolver disputas académicas | Registro de auditoría (logs) con marca de tiempo y usuario para acciones sensibles |
-| Information Disclosure | Exposición de datos personales/notas | Alto — incumplimiento de protección de datos (Ley 1581) | Cifrado en reposo y control de acceso basado en roles (RBAC) a nivel de consulta |
-| Denial of Service | Saturación del módulo de cursos | Medio — interrupción temporal del servicio | Límite de tasa (rate limiting) y auto-escalado con balanceo de carga |
-| Elevation of Privilege | Acceso a funciones de docente/admin | Alto — control total sobre contenido o calificaciones ajenas | Validar el rol en el servidor en cada solicitud; nunca confiar en el rol enviado por el cliente |
+Se completan las columnas restantes de la plantilla oficial (impacto, probabilidad, nivel de riesgo, mitigación, responsable y estado), llegando así a la tabla combinada final con las 12 columnas de `plantilla_analisis_stride.xlsx` — esta es la tabla que se entrega como `tabla-stride-clase.xlsx`:
+
+| ID | Componente / Activo | Tipo STRIDE | Descripción de la Amenaza | Escenario de Ataque | Impacto | Probabilidad | Nivel de Riesgo | Controles de Seguridad Existentes | Mitigación Recomendada | Responsable | Estado |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| T1 | Sistema de Autenticación (P1) / Credenciales (F1) | Spoofing | Un atacante se hace pasar por un estudiante usando credenciales robadas o phishing. | Atacante usa credenciales robadas vía phishing para iniciar sesión. | Alto — acceso no autorizado a la cuenta y sus datos | Media | **Alto** | Autenticación con usuario y contraseña, sin MFA. | Autenticación multifactor (MFA) y bloqueo tras intentos fallidos | Equipo de Seguridad | Pendiente |
+| T2 | Token de sesión (F3) | Tampering | El token de sesión es interceptado y modificado en tránsito si la comunicación no usa TLS. | Atacante intercepta la comunicación en una red no segura (ej. WiFi público) y modifica el token antes de que llegue al servidor. | Alto — secuestro de sesión activa | Baja | Medio | Comunicación cifrada con HTTPS en el flujo principal, sin verificación de firma del token en cada solicitud. | Forzar HTTPS/TLS en todas las comunicaciones y firmar/verificar el token (JWT) | Equipo Backend | En análisis |
+| T3 | Sistema de Autenticación (P1) — registro de acciones | Repudiation | Un estudiante o administrador realiza una acción sensible (ej. cambia una nota) y luego niega haberlo hecho, por falta de registro de auditoría. | Un docente cambia una calificación desde el panel y luego niega la acción al no existir registro con marca de tiempo y usuario. | Medio — dificulta resolver disputas académicas | Media | Medio | Registro de accesos básico, sin logs de auditoría con marca de tiempo y usuario para acciones sensibles. | Registro de auditoría (logs) con marca de tiempo y usuario para acciones sensibles | DevOps | Pendiente |
+| T4 | BD de Usuarios (D1) | Information Disclosure | Exposición de datos personales o notas académicas por una consulta sin control de acceso adecuado. | Atacante explota un endpoint de consulta sin validar permisos y descarga el historial académico de otros estudiantes. | Alto — incumplimiento de protección de datos (Ley 1581) | Media | **Alto** | Control de acceso a nivel de aplicación, sin validación de permisos a nivel de consulta a la BD. | Cifrado en reposo y control de acceso basado en roles (RBAC) a nivel de consulta | Equipo de Arquitectura | En progreso |
+| T5 | Módulo de Cursos (P2) | Denial of Service | Un atacante satura las solicitudes de contenido y deja el módulo de cursos inaccesible durante un examen. | Atacante lanza un ataque de flooding contra el endpoint de contenido de cursos durante la semana de exámenes. | Medio — interrupción temporal del servicio | Baja | Bajo | Balanceador de carga básico, sin límite de tasa (rate limiting) configurado. | Límite de tasa (rate limiting) y auto-escalado con balanceo de carga | Infraestructura | Pendiente |
+| T6 | Solicitud de curso con rol (F4) | Elevation of Privilege | Un estudiante manipula el parámetro de rol en la solicitud para acceder a funciones de docente o administrador. | Estudiante modifica manualmente el campo `role` en el payload de la solicitud para obtener acceso de administrador. | Alto — control total sobre contenido o calificaciones ajenas | Baja | Medio | Validación de rol en el cliente (frontend), sin revalidación estricta en el servidor. | Validar el rol en el servidor en cada solicitud; nunca confiar en el rol enviado por el cliente | Equipo de Seguridad | En análisis |
 
 ### Paso 5 — Priorizar por riesgo
 
-Se agregan probabilidad y riesgo resultante (Impacto × Probabilidad), y se ordena de mayor a menor riesgo — esta es la tabla que se entrega como `tabla-stride-cliente.xlsx`.
+A partir de la tabla completa del Paso 4, se construye una vista priorizada: se ordenan los ID por `Nivel de Riesgo` de mayor a menor. El detalle completo (impacto, probabilidad, controles existentes, mitigación, responsable y estado) permanece en la tabla del Paso 4; aquí solo se resume lo necesario para decidir qué atender primero.
 
-| Prioridad | Categoría | Amenaza | Impacto | Probabilidad | Riesgo |
-|---|---|---|---|---|---|
-| 1 | Information Disclosure | Exposición de datos personales/notas | Alto | Media | **Alto** |
-| 2 | Spoofing | Suplantación de estudiante | Alto | Media | **Alto** |
-| 3 | Elevation of Privilege | Acceso a funciones de docente/admin | Alto | Baja | Medio |
-| 4 | Tampering | Alteración del token de sesión | Alto | Baja | Medio |
-| 5 | Repudiation | Negación de una acción realizada | Medio | Media | Medio |
-| 6 | Denial of Service | Saturación del módulo de cursos | Medio | Baja | Bajo |
+| Prioridad | ID | Tipo STRIDE | Componente / Activo | Nivel de Riesgo |
+|---|---|---|---|---|
+| 1 | T4 | Information Disclosure | BD de Usuarios (D1) | **Alto** |
+| 2 | T1 | Spoofing | Sistema de Autenticación (P1) / Credenciales (F1) | **Alto** |
+| 3 | T6 | Elevation of Privilege | Solicitud de curso con rol (F4) | Medio |
+| 4 | T2 | Tampering | Token de sesión (F3) | Medio |
+| 5 | T3 | Repudiation | Sistema de Autenticación (P1) — registro de acciones | Medio |
+| 6 | T5 | Denial of Service | Módulo de Cursos (P2) | Bajo |
 
 ---
 
@@ -149,7 +151,7 @@ flowchart TD
     class auth aplicacion
 ```
 
-Cada fila de la tabla de priorización (Paso 5) es candidata a convertirse en un `Requirement`: la columna "Mitigación propuesta" es el texto del requisito, y la columna "Categoría/Elemento" indica sobre qué componente de Aplicación o Tecnología aplica la relación **Influence**.
+Cada fila de la tabla completa (Paso 4) es candidata a convertirse en un `Requirement`: la columna "Mitigación Recomendada" es el texto del requisito, y las columnas "Tipo STRIDE" / "Componente / Activo" indican sobre qué componente de Aplicación o Tecnología aplica la relación **Influence**.
 
 ---
 
