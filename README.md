@@ -10,11 +10,11 @@ Analizar los riesgos de seguridad en una parte crítica del sistema usando el ma
 
 Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Seguridad con STRIDE**](clase/guia_paso_a_paso_stride.md). Incluye las 6 categorías STRIDE explicadas, la metodología de 5 pasos (de un diagrama de flujo de datos a una tabla de riesgo priorizada), un ejemplo completo construido paso a paso sobre el flujo de acceso a cursos de EdukIT, **una práctica guiada de explotación real en [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** para dejar de ver las amenazas solo en papel, una guía de reconocimiento pasivo autorizado para completar la tabla del cliente real con evidencia en vez de suposiciones, y una tabla de errores comunes.
 
-### 🖼️ Versión visual: Anatomía de un Ataque
+### 🖼️ Versión visual: Modelado de Amenazas
 
-[`clase/anatomia-de-un-ataque.html`](clase/anatomia-de-un-ataque.html) es una página autocontenida (sin dependencias) que dibuja el DFD de EdukIT con las 6 amenazas STRIDE marcadas sobre el elemento exacto que atacan, un diagrama del mecanismo de cada categoría, y los 4 ataques de Juice Shop paso a paso. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
+[`clase/modelado-de-amenazas.html`](clase/modelado-de-amenazas.html) es una página interactiva autocontenida: un DFD clickeable (EdukIT o Clínica Salud Viva) que muestra las 6 categorías STRIDE analizadas para el flujo que seleccione, la matriz STRIDE-por-tipo-de-elemento, los 4 ataques reales de OWASP Juice Shop con su payload exacto, y una introducción a MITRE ATLAS para sistemas con IA (incluida la "tríada letal" de un agente vulnerable a inyección de instrucciones). GitHub no la renderiza interactiva desde la vista de archivo; para verla:
 - Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
-- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_5_Seguridad/main/clase/anatomia-de-un-ataque.html`
+- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_5_Seguridad/main/clase/modelado-de-amenazas.html`
 
 ## 🎓 Caso base de referencia: EdukIT (Plataforma de Educación Virtual)
 
