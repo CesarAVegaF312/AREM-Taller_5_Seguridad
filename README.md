@@ -12,7 +12,7 @@ Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Se
 
 ### 🖼️ Versión visual: Modelado de Amenazas
 
-[`clase/modelado-de-amenazas.html`](clase/modelado-de-amenazas.html) es una página interactiva autocontenida: un DFD clickeable (EdukIT o Clínica Salud Viva) que muestra las 6 categorías STRIDE analizadas para el flujo que seleccione, la matriz STRIDE-por-tipo-de-elemento, los 4 ataques reales de OWASP Juice Shop con su payload exacto, y una introducción a MITRE ATLAS para sistemas con IA (incluida la "tríada letal" de un agente vulnerable a inyección de instrucciones). GitHub no la renderiza interactiva desde la vista de archivo; para verla:
+[`clase/modelado-de-amenazas.html`](clase/modelado-de-amenazas.html) es una página interactiva autocontenida: un DFD clickeable (EdukIT o Clínica Salud Viva) que muestra las 6 categorías STRIDE analizadas para el flujo que seleccione, la matriz STRIDE-por-tipo-de-elemento, los 4 ataques reales de OWASP Juice Shop con su payload exacto, y una introducción a MITRE ATLAS para sistemas con IA (incluida la "tríada letal" de un agente vulnerable a inyección de instrucciones, con un ejemplo de código Python vulnerable vs. validado que muestra cómo romper esa tríada en la práctica). GitHub no la renderiza interactiva desde la vista de archivo; para verla:
 - Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
 - Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_5_Seguridad/main/clase/modelado-de-amenazas.html`
 
