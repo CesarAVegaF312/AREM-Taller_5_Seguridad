@@ -108,7 +108,55 @@ A partir de la tabla completa del Paso 4, se construye una vista priorizada: se 
 
 ---
 
-## 4. Errores comunes a evitar
+## 4. Práctica guiada: laboratorio con OWASP Juice Shop
+
+Hasta aquí STRIDE se trabajó sobre el papel. Esta práctica es opcional pero muy recomendada en la sesión de clase: se hace lo mismo, pero **ejecutando el ataque de verdad** contra una aplicación construida a propósito para esto, para que la amenaza deje de ser un párrafo abstracto.
+
+**[OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** es una tienda en línea deliberadamente vulnerable, publicada por OWASP específicamente para entrenamiento de seguridad — no es un sistema real, no hay implicaciones legales ni éticas por atacarla en su propia máquina.
+
+**Cómo levantarla (elija una opción):**
+- Docker (recomendado): `docker run --rm -p 3000:3000 bkimminich/juice-shop`, luego abra `http://localhost:3000`.
+- O use la [demo pública oficial](https://juice-shop.herokuapp.com/) si no puede instalar Docker (más lenta, compartida con otros usuarios).
+
+**4 retos guiados, uno por categoría STRIDE ya vista en el ejemplo de EdukIT:**
+
+| # | Categoría | Reto | Cómo hacerlo |
+|---|---|---|---|
+| 1 | Spoofing | Iniciar sesión como administrador sin conocer su contraseña | En el campo de correo del login, escriba `' OR 1=1--` y cualquier contraseña. Esto es una inyección SQL clásica: el `OR 1=1` hace que la consulta de validación sea siempre verdadera. |
+| 2 | Tampering | Comprar un producto pagando menos de su precio real | Agregue un producto al carrito, abra las herramientas de desarrollador del navegador (pestaña Red/Network), y modifique el valor `price` en la solicitud antes de confirmar la compra. |
+| 3 | Information Disclosure | Ver el carrito de compras de otro usuario | Inicie sesión, agregue un producto, y cambie el ID del carrito en la URL o en la solicitud a la API (ej. de `/rest/basket/6` a `/rest/basket/1`) para ver si el servidor valida que el carrito pertenezca a su usuario. |
+| 4 | Elevation of Privilege | Acceder al panel de administración sin ser administrador | Inicie sesión como usuario normal y navegue directamente a `http://localhost:3000/#/administration` — revise si el sistema realmente valida el rol en el servidor o solo oculta el enlace en la interfaz. |
+
+**Qué anotar de cada reto** (esto se integra directamente en la tabla del Paso 3-4 de la sección anterior, como una fila más basada en evidencia real en vez de un escenario hipotético):
+
+| Reto | Categoría STRIDE | ¿Qué control faltaba? | Mitigación real que lo hubiera evitado |
+|---|---|---|---|
+| 1 — Login bypass | Spoofing | Sin *prepared statements* / sin validación del input | Usar consultas parametrizadas (nunca concatenar el input del usuario en SQL) |
+| 2 — Precio manipulado | Tampering | El servidor confía en el precio que envía el cliente | Recalcular el precio en el servidor a partir del catálogo, nunca aceptar el precio del request |
+| 3 — Carrito ajeno | Information Disclosure | Falta de validación de propiedad del recurso (IDOR) | Verificar en el servidor que el recurso solicitado pertenece al usuario autenticado |
+| 4 — Panel admin | Elevation of Privilege | Control de acceso solo en el frontend | Revalidar el rol en cada endpoint del backend, nunca confiar en la interfaz |
+
+> ⚠️ **Estos retos son solo para Juice Shop, en su propia máquina.** Nunca repita estas técnicas (inyección SQL, manipulación de solicitudes, acceso a rutas de administración) contra el sistema del cliente real ni contra cualquier sistema en producción sin autorización explícita por escrito — eso deja de ser un ejercicio de clase y se convierte en una prueba de penetración real, con implicaciones legales.
+
+---
+
+## 5. Reconocimiento pasivo autorizado (para el cliente real)
+
+En la Parte 2, en vez de que la columna "Controles de Seguridad Existentes" sea una suposición, complétela con evidencia real observable **desde afuera**, sin necesidad de credenciales ni de tocar nada del lado del cliente. Esto es reconocimiento **pasivo y de solo lectura** — nunca un intento de explotación.
+
+| Qué revisar | Cómo (herramienta gratuita) | Qué categoría STRIDE alimenta |
+|---|---|---|
+| Cabeceras de seguridad HTTP (HSTS, CSP, X-Frame-Options) | `curl -I https://sitio-del-cliente.com` o [securityheaders.com](https://securityheaders.com) | Tampering, Information Disclosure |
+| Configuración TLS/certificado | [ssllabs.com/ssltest](https://www.ssllabs.com/ssltest/) | Tampering, Spoofing |
+| Mensajes de error expuestos (stack traces, versiones de software) | Provocar un error simple (ej. una URL inválida) y observar la respuesta | Information Disclosure |
+| Documentación de API pública sin autenticación (ej. Swagger/OpenAPI abierto) | Buscar rutas comunes como `/swagger`, `/api-docs` | Information Disclosure, Elevation of Privilege |
+| Filtraciones de datos pasadas asociadas al dominio | [haveibeenpwned.com](https://haveibeenpwned.com/) | Information Disclosure |
+
+> ⚠️ **Límite estricto:** esto se queda en observación pasiva de lo que el sistema ya expone públicamente. No se envían credenciales de prueba, no se intentan inyecciones, no se accede a rutas privadas ni se prueban contraseñas — nada que requiera autorización. Si el equipo o el cliente quieren ir más allá (pruebas activas), eso es un pentest formal con alcance y autorización por escrito, fuera del alcance de este taller.
+
+---
+
+## 6. Errores comunes a evitar
 
 | Error frecuente | Por qué es un problema | Cómo corregirlo |
 |---|---|---|
@@ -116,10 +164,11 @@ A partir de la tabla completa del Paso 4, se construye una vista priorizada: se 
 | Aplicar solo 2–3 categorías y omitir el resto | El marco pierde su propósito: cubrir sistemáticamente los 6 tipos de riesgo | Revise las 6 categorías para cada elemento relevante, aunque alguna no aplique |
 | Mitigación vaga ("mejorar la seguridad") | No es una acción verificable ni evaluable en la rúbrica | Proponga un control concreto (MFA, cifrado, rate limiting, RBAC, logs de auditoría, etc.) |
 | No priorizar los hallazgos | Un informe con muchas amenazas sin orden no ayuda a decidir qué atender primero | Clasifique cada amenaza por impacto × probabilidad y priorice (Paso 5) |
+| Hacer pruebas activas (inyección, fuerza bruta, acceso no autorizado) contra el sistema del cliente real | Sin autorización por escrito, es una prueba de penetración no autorizada, con implicaciones legales | Los retos activos se practican solo en Juice Shop (sección 4); con el cliente real, solo reconocimiento pasivo (sección 5) |
 
 ---
 
-## 5. Checklist de autoevaluación antes de entregar
+## 7. Checklist de autoevaluación antes de entregar
 
 - [ ] Se documentó un DFD (o descripción equivalente) del flujo analizado, con procesos, almacenes de datos y flujos.
 - [ ] Se aplicaron las 6 categorías STRIDE sobre los elementos relevantes del flujo.
@@ -127,10 +176,13 @@ A partir de la tabla completa del Paso 4, se construye una vista priorizada: se 
 - [ ] Cada amenaza tiene una mitigación concreta y verificable.
 - [ ] Cada amenaza tiene impacto, probabilidad y nivel de riesgo asignado.
 - [ ] Los hallazgos están priorizados de mayor a menor riesgo.
+- [ ] Se completó al menos un reto práctico en Juice Shop y se relacionó con una fila de la tabla STRIDE.
+- [ ] La columna "Controles de Seguridad Existentes" del cliente real se basa en reconocimiento pasivo real (sección 5), no en suposiciones.
+- [ ] Ninguna técnica activa (inyección, manipulación de solicitudes, acceso no autorizado) se probó contra el sistema del cliente real sin autorización explícita por escrito.
 
 ---
 
-## 6. Vista ArchiMate equivalente
+## 8. Vista ArchiMate equivalente
 
 STRIDE no tiene una capa propia en ArchiMate — sus mitigaciones se modelan como **Requirement** en la capa de Motivación (ver la [Guía de Notación ArchiMate](https://github.com/CesarAVegaF312/AREM-ArchiMate/blob/main/guia_notacion_archimate.md)), conectados con **Influence** al elemento de Aplicación o Tecnología que deben proteger.
 
