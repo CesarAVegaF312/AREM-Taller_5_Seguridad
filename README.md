@@ -10,6 +10,12 @@ Analizar los riesgos de seguridad en una parte crítica del sistema usando el ma
 
 Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Seguridad con STRIDE**](clase/guia_paso_a_paso_stride.md). Incluye las 6 categorías STRIDE explicadas, la metodología de 5 pasos (de un diagrama de flujo de datos a una tabla de riesgo priorizada), un ejemplo completo construido paso a paso sobre el flujo de acceso a cursos de EdukIT, **una práctica guiada de explotación real en [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** para dejar de ver las amenazas solo en papel, una guía de reconocimiento pasivo autorizado para completar la tabla del cliente real con evidencia en vez de suposiciones, y una tabla de errores comunes.
 
+### 🖼️ Versión visual: Anatomía de un Ataque
+
+[`clase/anatomia-de-un-ataque.html`](clase/anatomia-de-un-ataque.html) es una página autocontenida (sin dependencias) que dibuja el DFD de EdukIT con las 6 amenazas STRIDE marcadas sobre el elemento exacto que atacan, un diagrama del mecanismo de cada categoría, y los 4 ataques de Juice Shop paso a paso. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
+- Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
+- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_5_Seguridad/main/clase/anatomia-de-un-ataque.html`
+
 ## 🎓 Caso base de referencia: EdukIT (Plataforma de Educación Virtual)
 
 EdukIT es una plataforma de educación en línea que ofrece cursos certificados para estudiantes en América Latina. Administra el acceso a contenido educativo, evaluaciones, interacción con docentes y pagos por suscripción. El sistema gestiona información sensible como historial académico, datos personales, medios de pago y actividad del usuario. Evaluar la seguridad de estos procesos a través de un marco como STRIDE permite anticipar amenazas como suplantación, filtración de datos o accesos no autorizados, y diseñar estrategias de mitigación alineadas con las necesidades de protección de la información educativa.

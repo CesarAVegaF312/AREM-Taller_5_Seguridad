@@ -112,6 +112,8 @@ A partir de la tabla completa del Paso 4, se construye una vista priorizada: se 
 
 Hasta aquí STRIDE se trabajó sobre el papel. Esta práctica es opcional pero muy recomendada en la sesión de clase: se hace lo mismo, pero **ejecutando el ataque de verdad** contra una aplicación construida a propósito para esto, para que la amenaza deje de ser un párrafo abstracto.
 
+📎 Los 6 mecanismos y los 4 retos de esta sección están diagramados en [`clase/anatomia-de-un-ataque.html`](anatomia-de-un-ataque.html) — una página visual autocontenida, útil para presentar en clase antes de que cada equipo entre a Juice Shop.
+
 **[OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** es una tienda en línea deliberadamente vulnerable, publicada por OWASP específicamente para entrenamiento de seguridad — no es un sistema real, no hay implicaciones legales ni éticas por atacarla en su propia máquina.
 
 **Cómo levantarla (elija una opción):**
