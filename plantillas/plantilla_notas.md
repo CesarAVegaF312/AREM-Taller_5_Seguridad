@@ -1,14 +1,14 @@
-# 🗒️ Registro de Trabajo en Clase - Taller X
+# Registro de Trabajo en Clase - Taller X
 
-## 📆 Fecha de la sesión
+## Fecha de la sesión
 _Indique la fecha de la clase en que se trabajó este taller._
 
-## 👥 Integrantes presentes
+## Integrantes presentes
 - Nombre 1
 - Nombre 2
 - Nombre 3
 
-## 🧠 Actividades realizadas en clase
+## Actividades realizadas en clase
 
 Describa brevemente qué se hizo durante la sesión:
 
@@ -17,11 +17,11 @@ Describa brevemente qué se hizo durante la sesión:
 - ¿Qué herramientas se usaron (papel, pizarra, draw.io, Astah)?
 - ¿Qué parte del trabajo se alcanzó a desarrollar?
 
-## 🧩 Boceto inicial del modelo
+## Boceto inicial del modelo
 
 > (Puede insertar aquí una imagen del boceto, una captura de pantalla o un diagrama preliminar si ya fue hecho en digital)
 
-## 🔁 Tareas definidas para complementar el taller
+## Tareas definidas para complementar el taller
 
 Anote las responsabilidades acordadas entre los miembros del equipo para completar la entrega final:
 

@@ -1,22 +1,22 @@
-# 🛠️ Taller 5: Evaluación de Seguridad con STRIDE
+# Taller 5: Evaluación de Seguridad con STRIDE
 
-## 🎯 Objetivo
+## Objetivo
 
 Analizar los riesgos de seguridad en una parte crítica del sistema usando el marco STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege).
 
 ---
 
-## 📘 Guía paso a paso
+## Guía paso a paso
 
 Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Seguridad con STRIDE**](clase/guia_paso_a_paso_stride.md). Incluye las 6 categorías STRIDE explicadas, la metodología de 5 pasos (de un diagrama de flujo de datos a una tabla de riesgo priorizada), un ejemplo completo construido paso a paso sobre el flujo de acceso a cursos de EdukIT, **una práctica guiada de explotación real en [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** para dejar de ver las amenazas solo en papel, una guía de reconocimiento pasivo autorizado para completar la tabla del cliente real con evidencia en vez de suposiciones, y una tabla de errores comunes.
 
-### 🖼️ Versión visual: Modelado de Amenazas
+### Versión visual: Modelado de Amenazas
 
 [`clase/modelado-de-amenazas.html`](clase/modelado-de-amenazas.html) es una página interactiva autocontenida: un DFD clickeable (EdukIT o Clínica Salud Viva) que muestra las 6 categorías STRIDE analizadas para el flujo que seleccione, la matriz STRIDE-por-tipo-de-elemento, los 4 ataques reales de OWASP Juice Shop con su payload exacto, y una introducción a MITRE ATLAS para sistemas con IA (incluida la "tríada letal" de un agente vulnerable a inyección de instrucciones, con un ejemplo de código Python vulnerable vs. validado que muestra cómo romper esa tríada en la práctica). GitHub no la renderiza interactiva desde la vista de archivo; para verla:
 - Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
 - Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_5_Seguridad/main/clase/modelado-de-amenazas.html`
 
-## 🎓 Caso base de referencia: EdukIT (Plataforma de Educación Virtual)
+## Caso base de referencia: EdukIT (Plataforma de Educación Virtual)
 
 EdukIT es una plataforma de educación en línea que ofrece cursos certificados para estudiantes en América Latina. Administra el acceso a contenido educativo, evaluaciones, interacción con docentes y pagos por suscripción. El sistema gestiona información sensible como historial académico, datos personales, medios de pago y actividad del usuario. Evaluar la seguridad de estos procesos a través de un marco como STRIDE permite anticipar amenazas como suplantación, filtración de datos o accesos no autorizados, y diseñar estrategias de mitigación alineadas con las necesidades de protección de la información educativa.
 
@@ -34,7 +34,7 @@ EdukIT es una plataforma de educación en línea que ofrece cursos certificados 
 
 ---
 
-## 🧪 Parte 1: Trabajo en Clase
+## Parte 1: Trabajo en Clase
 
 Durante la clase se espera que el equipo:
 
@@ -54,7 +54,7 @@ Como referencia adicional durante el ejercicio, consulte [`clase/stride_analisis
 
 ---
 
-## 🧠 Parte 2: Aplicación al Cliente Real
+## Parte 2: Aplicación al Cliente Real
 
 Después de la clase, el equipo debe:
 
@@ -66,7 +66,7 @@ Después de la clase, el equipo debe:
 
 ---
 
-## 📁 Estructura esperada del repositorio
+## Estructura esperada del repositorio
 
 ```text
 taller-05-seguridad-stride/
@@ -89,11 +89,11 @@ taller-05-seguridad-stride/
 
 ---
 
-## ⚠️ Errores comunes
+## Errores comunes
 
 Antes de entregar, compare su tabla contra los errores más frecuentes (amenazas genéricas, categorías STRIDE omitidas, mitigaciones vagas, hallazgos sin priorizar, o hacer pruebas activas contra el cliente real sin autorización) documentados en la [sección 6 de la guía paso a paso](clase/guia_paso_a_paso_stride.md#6-errores-comunes-a-evitar).
 
-## 📤 Entregables
+## Entregables
 
 - Tabla STRIDE aplicada al sistema del cliente
 - Informe técnico de análisis de seguridad
@@ -101,7 +101,7 @@ Antes de entregar, compare su tabla contra los errores más frecuentes (amenazas
 
 ---
 
-## 📊 Rúbrica de Evaluación
+## Rúbrica de Evaluación
 
 | Criterio                            | Excelente (5)                                                           | Aceptable (3) / Insuficiente (1–2)                      |
 |-------------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------|
@@ -112,6 +112,6 @@ Antes de entregar, compare su tabla contra los errores más frecuentes (amenazas
 
 ---
 
-## ✅ Licencia
+## Licencia
 
 Este taller hace parte del curso de Arquitectura Empresarial - Universidad de La Sabana. Uso académico bajo licencia MIT.
