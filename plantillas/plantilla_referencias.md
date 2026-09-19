@@ -1,13 +1,13 @@
-# 📚 Referencias Bibliográficas del Taller
+# Referencias Bibliográficas del Taller
 
 Este archivo contiene las fuentes consultadas para el desarrollo del taller, tanto para el componente técnico como para la investigación complementaria.
 
-## 🔖 Taller
+## Taller
 _Taller X - [Nombre del Taller]_
 
 ---
 
-## 📚 Referencias utilizadas
+## Referencias utilizadas
 
 1. Apellido, Nombre. *Título del libro o artículo*. Editorial, Año. URL o DOI.  
 2. Organización. *Especificación técnica o estándar consultado*. URL.  
@@ -16,7 +16,7 @@ _Taller X - [Nombre del Taller]_
 
 ---
 
-## 📌 Recomendaciones
+## Recomendaciones
 
 - Usa formato APA o IEEE para citar.
 - No incluyas fuentes como Wikipedia si hay mejores alternativas.

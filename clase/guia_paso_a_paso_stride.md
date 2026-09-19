@@ -1,4 +1,4 @@
-# 🧭 Guía Paso a Paso: Evaluación de Seguridad con STRIDE
+# Guía Paso a Paso: Evaluación de Seguridad con STRIDE
 
 Esta guía complementa el `README.md` del taller. Su objetivo es que, antes de analizar un flujo crítico de EdukIT en clase (Parte 1) o del sistema del cliente real (Parte 2), el equipo tenga una referencia clara del marco STRIDE y de la metodología para pasar de "dibujar el flujo" a "priorizar amenazas reales".
 
@@ -39,7 +39,7 @@ Se elige el flujo de **acceso de estudiantes a cursos y materiales**: el estudia
 
 ```mermaid
 flowchart LR
-    estudiante(["🧑 Estudiante"])
+    estudiante(["Estudiante"])
 
     subgraph backend["Backend EdukIT (zona de confianza)"]
         auth["P1: Sistema de Autenticación"]
@@ -112,7 +112,7 @@ A partir de la tabla completa del Paso 4, se construye una vista priorizada: se 
 
 Hasta aquí STRIDE se trabajó sobre el papel. Esta práctica es opcional pero muy recomendada en la sesión de clase: se hace lo mismo, pero **ejecutando el ataque de verdad** contra una aplicación construida a propósito para esto, para que la amenaza deje de ser un párrafo abstracto.
 
-📎 Los 6 mecanismos y los 4 retos de esta sección están diagramados de forma interactiva en [`clase/modelado-de-amenazas.html`](modelado-de-amenazas.html) — útil para presentar en clase antes de que cada equipo entre a Juice Shop.
+Los 6 mecanismos y los 4 retos de esta sección están diagramados de forma interactiva en [`clase/modelado-de-amenazas.html`](modelado-de-amenazas.html) — útil para presentar en clase antes de que cada equipo entre a Juice Shop.
 
 **[OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** es una tienda en línea deliberadamente vulnerable, publicada por OWASP específicamente para entrenamiento de seguridad — no es un sistema real, no hay implicaciones legales ni éticas por atacarla en su propia máquina.
 
@@ -138,7 +138,7 @@ Hasta aquí STRIDE se trabajó sobre el papel. Esta práctica es opcional pero m
 | 3 — Carrito ajeno | Information Disclosure | Falta de validación de propiedad del recurso (IDOR) | Verificar en el servidor que el recurso solicitado pertenece al usuario autenticado |
 | 4 — Panel admin | Elevation of Privilege | Control de acceso solo en el frontend | Revalidar el rol en cada endpoint del backend, nunca confiar en la interfaz |
 
-> ⚠️ **Estos retos son solo para Juice Shop, en su propia máquina.** Nunca repita estas técnicas (inyección SQL, manipulación de solicitudes, acceso a rutas de administración) contra el sistema del cliente real ni contra cualquier sistema en producción sin autorización explícita por escrito — eso deja de ser un ejercicio de clase y se convierte en una prueba de penetración real, con implicaciones legales.
+> **Estos retos son solo para Juice Shop, en su propia máquina.** Nunca repita estas técnicas (inyección SQL, manipulación de solicitudes, acceso a rutas de administración) contra el sistema del cliente real ni contra cualquier sistema en producción sin autorización explícita por escrito — eso deja de ser un ejercicio de clase y se convierte en una prueba de penetración real, con implicaciones legales.
 
 ---
 
@@ -154,7 +154,7 @@ En la Parte 2, en vez de que la columna "Controles de Seguridad Existentes" sea 
 | Documentación de API pública sin autenticación (ej. Swagger/OpenAPI abierto) | Buscar rutas comunes como `/swagger`, `/api-docs` | Information Disclosure, Elevation of Privilege |
 | Filtraciones de datos pasadas asociadas al dominio | [haveibeenpwned.com](https://haveibeenpwned.com/) | Information Disclosure |
 
-> ⚠️ **Límite estricto:** esto se queda en observación pasiva de lo que el sistema ya expone públicamente. No se envían credenciales de prueba, no se intentan inyecciones, no se accede a rutas privadas ni se prueban contraseñas — nada que requiera autorización. Si el equipo o el cliente quieren ir más allá (pruebas activas), eso es un pentest formal con alcance y autorización por escrito, fuera del alcance de este taller.
+> **Límite estricto:** esto se queda en observación pasiva de lo que el sistema ya expone públicamente. No se envían credenciales de prueba, no se intentan inyecciones, no se accede a rutas privadas ni se prueban contraseñas — nada que requiera autorización. Si el equipo o el cliente quieren ir más allá (pruebas activas), eso es un pentest formal con alcance y autorización por escrito, fuera del alcance de este taller.
 
 ---
 
@@ -191,7 +191,7 @@ STRIDE no tiene una capa propia en ArchiMate — sus mitigaciones se modelan com
 ```mermaid
 flowchart TD
     subgraph motivacion["Motivación"]
-        req(["📋 Requisito: autenticación multifactor"])
+        req(["Requisito: autenticación multifactor"])
     end
     subgraph aplicacion["Aplicación"]
         auth["Sistema de Autenticación"]
