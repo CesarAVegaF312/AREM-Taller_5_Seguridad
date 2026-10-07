@@ -10,6 +10,8 @@ Analizar los riesgos de seguridad en una parte crítica del sistema usando el ma
 
 Antes de empezar el análisis, revise la [**Guía Paso a Paso: Evaluación de Seguridad con STRIDE**](clase/guia_paso_a_paso_stride.md). Incluye las 6 categorías STRIDE explicadas, la metodología de 5 pasos (de un diagrama de flujo de datos a una tabla de riesgo priorizada), un ejemplo completo construido paso a paso sobre el flujo de acceso a cursos de EdukIT, **una práctica guiada de explotación real en [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)** para dejar de ver las amenazas solo en papel, una guía de reconocimiento pasivo autorizado para completar la tabla del cliente real con evidencia en vez de suposiciones, y una tabla de errores comunes.
 
+La presentación de la clase está en [`6. Seguridad_STRIDE_unificado.pptx`](6.%20Seguridad_STRIDE_unificado.pptx) (versión para estudiantes, sin notas del orador).
+
 ### Versión visual: Modelado de Amenazas
 
 [`clase/modelado-de-amenazas.html`](clase/modelado-de-amenazas.html) es una página interactiva autocontenida: un DFD clickeable (EdukIT o Clínica Salud Viva) que muestra las 6 categorías STRIDE analizadas para el flujo que seleccione, la matriz STRIDE-por-tipo-de-elemento, los 4 ataques reales de OWASP Juice Shop con su payload exacto, y una introducción a MITRE ATLAS para sistemas con IA (incluida la "tríada letal" de un agente vulnerable a inyección de instrucciones, con un ejemplo de código Python vulnerable vs. validado que muestra cómo romper esa tríada en la práctica). GitHub no la renderiza interactiva desde la vista de archivo; para verla:
