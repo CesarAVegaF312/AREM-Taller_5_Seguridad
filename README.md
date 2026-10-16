@@ -62,6 +62,7 @@ Después de la clase, el equipo debe:
 
 - Aplicar STRIDE sobre un proceso o componente crítico del sistema del cliente real, siguiendo los mismos 5 pasos de la metodología.
 - Antes de adivinar los controles existentes, haga el [reconocimiento pasivo autorizado](clase/guia_paso_a_paso_stride.md#5-reconocimiento-pasivo-autorizado-para-el-cliente-real) (cabeceras HTTP, configuración TLS, mensajes de error, documentación de API expuesta) — **solo observación de lo público, nunca pruebas activas contra el sistema real sin autorización por escrito**.
+- Dibujar el DFD del flujo analizado en `entrega/dfd-cliente.drawio`, marcando los límites de confianza: es el diagrama sobre el que se aplica la tabla STRIDE (Paso 1 de la guía). draw.io es suficiente; [OWASP Threat Dragon](https://owasp.org/www-project-threat-dragon/) es una alternativa opcional que dibuja el DFD y anota las amenazas sobre él (si la usa, exporte también el diagrama como imagen).
 - Elaborar una tabla con amenazas, impactos, controles propuestos y nivel de riesgo (`entrega/tabla-stride-cliente.xlsx`), usando la [plantilla oficial](plantillas/plantilla_analisis_stride.xlsx). Las columnas enriquecidas — **Escenario de Ataque**, **Controles de Seguridad Existentes**, **Responsable** y **Estado** — ahora son obligatorias al diligenciarla; no basta con describir la amenaza y su mitigación.
 - Redactar el informe en `entrega/informe.md` usando la [plantilla de informe del taller](plantillas/plantilla_informe_taller.md); explicar el análisis de seguridad y las diferencias con el caso base.
 - Investigar buenas prácticas de seguridad aplicadas al sector del cliente (educación, salud, logística, etc.), y registrar las fuentes en `entrega/referencias.md` con la [plantilla de referencias](plantillas/plantilla_referencias.md).
@@ -79,6 +80,7 @@ taller-05-seguridad-stride/
 │   ├── tabla-stride-clase.xlsx
 │   └── notas.md                        # Ver plantillas/plantilla_notas.md
 ├── entrega/
+│   ├── dfd-cliente.drawio              # DFD del flujo analizado, con límites de confianza
 │   ├── tabla-stride-cliente.xlsx
 │   ├── informe.md                      # Ver plantillas/plantilla_informe_taller.md
 │   └── referencias.md                  # Ver plantillas/plantilla_referencias.md
@@ -97,6 +99,7 @@ Antes de entregar, compare su tabla contra los errores más frecuentes (amenazas
 
 ## Entregables
 
+- DFD del flujo analizado con límites de confianza (`dfd-cliente.drawio`)
 - Tabla STRIDE aplicada al sistema del cliente
 - Informe técnico de análisis de seguridad
 - Referencias de buenas prácticas en ciberseguridad

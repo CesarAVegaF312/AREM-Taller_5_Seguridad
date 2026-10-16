@@ -27,9 +27,9 @@ Anote las responsabilidades acordadas entre los miembros del equipo para complet
 
 | Tarea asignada | Responsable | Fecha estimada |
 |----------------|-------------|----------------|
-| Modelado final en draw.io | Nombre 1 | 10/08 |
-| Redacción del informe     | Nombre 2 | 11/08 |
-| Investigación y referencias | Nombre 3 | 12/08 |
+| Modelado final en draw.io | Nombre 1 | 25/07 |
+| Redacción del informe     | Nombre 2 | 01/08 |
+| Investigación y referencias | Nombre 3 | 08/08 |
 
 ---
 

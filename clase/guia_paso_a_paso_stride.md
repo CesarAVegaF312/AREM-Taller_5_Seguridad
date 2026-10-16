@@ -29,6 +29,10 @@ STRIDE no se aplica "en el aire": se aplica sobre un diagrama de flujo de datos 
 4. **Evaluar impacto y proponer mitigación** — para cada amenaza identificada, describa su impacto y un control concreto que la mitigue.
 5. **Priorizar por riesgo** — combine impacto y probabilidad para asignar un nivel de riesgo a cada amenaza y ordene la tabla de mayor a menor riesgo.
 
+> **Límites de confianza y Zero Trust.** El modelo antiguo asumía que lo que estaba dentro de la red era confiable; Zero Trust (NIST SP 800-207) elimina ese supuesto: cada petición se verifica venga de donde venga, con identidad propia y verificable para personas, servicios y agentes automatizados, mínimo privilegio, credenciales de vida corta y verificación continua. Al dibujar el DFD del cliente real no trace un único límite «dentro / fuera»: toda flecha que cruza un límite de confianza es un punto de análisis obligatorio. Pregunta para el cliente: ¿cuántas cuentas de servicio tiene el sistema, quién las creó, qué permisos tienen y cuándo se rotaron sus credenciales por última vez? En la mayoría de las organizaciones nadie sabe responder, y esa es exactamente la brecha.
+>
+> **Herramienta.** draw.io basta para el DFD (puede partir del C2 del Taller 3 con los límites de confianza dibujados encima). [OWASP Threat Dragon](https://owasp.org/www-project-threat-dragon/) (gratuita, web y escritorio) es opcional: dibuja el DFD y permite anotar las amenazas sobre cada elemento. La herramienta no se califica; se califica que la tabla tenga las seis categorías y que cada control sea verificable.
+
 ---
 
 ## 3. Ejemplo guiado: Acceso de estudiantes a cursos y materiales (EdukIT)
@@ -172,7 +176,7 @@ En la Parte 2, en vez de que la columna "Controles de Seguridad Existentes" sea 
 
 ## 7. Checklist de autoevaluación antes de entregar
 
-- [ ] Se documentó un DFD (o descripción equivalente) del flujo analizado, con procesos, almacenes de datos y flujos.
+- [ ] Se documentó el DFD del flujo analizado (para el cliente real, en `entrega/dfd-cliente.drawio`), con procesos, almacenes de datos, flujos y límites de confianza.
 - [ ] Se aplicaron las 6 categorías STRIDE sobre los elementos relevantes del flujo.
 - [ ] Cada amenaza está redactada sobre un elemento específico, no de forma genérica.
 - [ ] Cada amenaza tiene una mitigación concreta y verificable.
