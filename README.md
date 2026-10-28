@@ -69,9 +69,11 @@ Después de la clase, el equipo debe:
 
 ---
 
-## Validación técnica (opcional)
+## Validación técnica, análisis de casos y tecnología (opcional)
 
 Como complemento del laboratorio con Juice Shop, el equipo puede correr dos escaneos automatizados sobre la misma aplicación: OWASP ZAP (encabezados de seguridad e información expuesta) y Trivy (componentes con vulnerabilidades conocidas), y llevar sus alertas a la tabla STRIDE. Lo más valioso es la comparación: los escaneos no detectan ninguno de los cuatro retos de la sección 4, que solo aparecen con el análisis manual. No es un ejercicio de programación: el laboratorio ya está listo en [`clase/validacion-tecnica/`](clase/validacion-tecnica/) y cada escaneo es un comando. El procedimiento está en la [sección 9 de la guía paso a paso](clase/guia_paso_a_paso_stride.md#9-validación-técnica-escaneo-automatizado-del-laboratorio-opcional). **Los escaneos se hacen solo contra el laboratorio local, nunca contra el sistema del cliente.**
+
+**Análisis de caso real y tecnología.** La [sección 10 de la guía](clase/guia_paso_a_paso_stride.md#10-análisis-de-caso-real-y-panorama-tecnológico-opcional) analiza con STRIDE la filtración de datos de Equifax (2017), causada por una librería sin actualizar, y presenta el panorama de herramientas de seguridad (SAST, DAST, SCA, WAF, identidad, monitoreo). El equipo analiza un caso del sector de su cliente con la [plantilla de análisis de caso](plantillas/plantilla_analisis_caso.md) en `entrega/analisis-caso.md`.
 
 ---
 
