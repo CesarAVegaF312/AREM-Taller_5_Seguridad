@@ -213,4 +213,60 @@ Cada fila de la tabla completa (Paso 4) es candidata a convertirse en un `Requir
 
 ---
 
+## 9. Validación técnica: escaneo automatizado del laboratorio (opcional)
+
+En la sección 4 el equipo encontró amenazas a mano, pensando como atacante. Esta sección agrega la otra mitad: lo que una herramienta automática encuentra sola sobre la misma aplicación, y lo que **no** encuentra. No es un ejercicio de programación: el laboratorio ya está listo en [`validacion-tecnica/`](validacion-tecnica/) y cada escaneo es un comando.
+
+### 9.1 Qué se necesita
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (o Docker Engine en Linux).
+- Descargar las imágenes **antes de la clase**: la de ZAP pesa cerca de 3,5 GB. Desde `clase/validacion-tecnica/`: `docker compose --profile escaneo pull`.
+
+### 9.2 Correr los escaneos
+
+Desde la carpeta `clase/validacion-tecnica/`:
+
+```bash
+docker compose up -d juice-shop     # la misma Juice Shop de la sección 4, en http://localhost:3000
+docker compose run --rm zap         # unos 2 minutos
+docker compose run --rm trivy       # la primera vez descarga la base de vulnerabilidades
+docker compose down
+```
+
+Los reportes quedan en `clase/validacion-tecnica/reportes/`:
+
+| Herramienta | Qué revisa | Reporte |
+|---|---|---|
+| [OWASP ZAP](https://www.zaproxy.org/) (escaneo base) | Recorre el sitio y revisa las respuestas HTTP: encabezados de seguridad, cookies, información expuesta. No envía ataques. | `reporte-zap.html` (se abre en el navegador) |
+| [Trivy](https://trivy.dev/) | Compara los componentes instalados en la imagen (sistema operativo y librerías) contra bases públicas de vulnerabilidades conocidas (CVE). Se limita a severidad alta y crítica. | `reporte-trivy.txt` |
+
+### 9.3 De la alerta a la tabla STRIDE
+
+Una alerta no es una amenaza: hay que decidir qué elemento afecta, en qué categoría cae y si de verdad importa. Estas son las alertas que reporta ZAP sobre Juice Shop:
+
+| Alerta de ZAP | Qué significa | Categoría STRIDE | ¿Riesgo real? |
+|---|---|---|---|
+| Content Security Policy (CSP) Header Not Set | El navegador no tiene reglas sobre qué scripts puede ejecutar, lo que facilita inyectar código en la página | Tampering | Sí |
+| Cross-Domain Misconfiguration | La aplicación permite que cualquier otro sitio web lea sus respuestas (CORS abierto) | Information Disclosure | Depende de qué datos exponga cada respuesta |
+| Cross-Domain JavaScript Source File Inclusion | La página carga scripts de servidores de terceros; si ese tercero es comprometido, el script también | Tampering | Depende del tercero |
+| Information Disclosure - Suspicious Comments | El código que llega al navegador tiene comentarios con palabras como "TODO" o "admin" | Information Disclosure | Hay que revisarlo a mano |
+| Timestamp Disclosure - Unix | Aparecen números que parecen fechas | Information Disclosure | Casi siempre un falso positivo |
+| Modern Web Application | Solo informa que el sitio es una aplicación de una sola página | Ninguna | No, es informativa |
+
+Trivy, por su parte, reporta cientos de vulnerabilidades altas y críticas en librerías desactualizadas (Juice Shop está desactualizada a propósito). Esas filas alimentan la columna **Controles de Seguridad Existentes** ("no hay un proceso de actualización de dependencias") y suelen caer en Denial of Service o Elevation of Privilege según la descripción de cada CVE.
+
+**Lo más importante es lo que no aparece.** Ninguno de los dos escaneos detecta los cuatro retos de la sección 4: ni el inicio de sesión con inyección SQL, ni el precio manipulado, ni el carrito ajeno, ni el panel de administración. Son fallas de lógica del negocio y de control de acceso, y solo se encuentran pensando cada flujo del DFD con STRIDE. Un reporte de escaneo limpio no significa un sistema seguro.
+
+### 9.4 Qué entregar
+
+En `entrega/informe.md`, agregue una sección corta con:
+
+1. Dos alertas de ZAP llevadas a la tabla STRIDE (con elemento afectado, categoría y si es riesgo real o falso positivo).
+2. Una conclusión de Trivy sobre la gestión de dependencias.
+3. Una comparación: qué encontró el escaneo, qué encontró el análisis manual, y qué encontraron los dos.
+
+> **Estos escaneos se hacen solo contra el laboratorio, en su propio computador.** El escaneo base de ZAP recorre todas las páginas del sitio y genera cientos de solicitudes: contra el sistema del cliente real o cualquier sistema de terceros, eso ya no es reconocimiento pasivo (sección 5) y requiere autorización por escrito.
+
+---
+
 _Esta guía hace parte del Taller 5 de Evaluación de Seguridad con STRIDE — curso Arquitectura Empresarial, Universidad de La Sabana._
