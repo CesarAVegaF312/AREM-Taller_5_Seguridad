@@ -213,4 +213,108 @@ Cada fila de la tabla completa (Paso 4) es candidata a convertirse en un `Requir
 
 ---
 
+## 9. Validación técnica: escaneo automatizado del laboratorio (opcional)
+
+En la sección 4 el equipo encontró amenazas a mano, pensando como atacante. Esta sección agrega la otra mitad: lo que una herramienta automática encuentra sola sobre la misma aplicación, y lo que **no** encuentra. No es un ejercicio de programación: el laboratorio ya está listo en [`validacion-tecnica/`](validacion-tecnica/) y cada escaneo es un comando.
+
+### 9.1 Qué se necesita
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (o Docker Engine en Linux).
+- Descargar las imágenes **antes de la clase**: la de ZAP pesa cerca de 3,5 GB. Desde `clase/validacion-tecnica/`: `docker compose --profile escaneo pull`.
+
+### 9.2 Correr los escaneos
+
+Desde la carpeta `clase/validacion-tecnica/`:
+
+```bash
+docker compose up -d juice-shop     # la misma Juice Shop de la sección 4, en http://localhost:3000
+docker compose run --rm zap         # unos 2 minutos
+docker compose run --rm trivy       # la primera vez descarga la base de vulnerabilidades
+docker compose down
+```
+
+Los reportes quedan en `clase/validacion-tecnica/reportes/`:
+
+| Herramienta | Qué revisa | Reporte |
+|---|---|---|
+| [OWASP ZAP](https://www.zaproxy.org/) (escaneo base) | Recorre el sitio y revisa las respuestas HTTP: encabezados de seguridad, cookies, información expuesta. No envía ataques. | `reporte-zap.html` (se abre en el navegador) |
+| [Trivy](https://trivy.dev/) | Compara los componentes instalados en la imagen (sistema operativo y librerías) contra bases públicas de vulnerabilidades conocidas (CVE). Se limita a severidad alta y crítica. | `reporte-trivy.txt` |
+
+### 9.3 De la alerta a la tabla STRIDE
+
+Una alerta no es una amenaza: hay que decidir qué elemento afecta, en qué categoría cae y si de verdad importa. Estas son las alertas que reporta ZAP sobre Juice Shop:
+
+| Alerta de ZAP | Qué significa | Categoría STRIDE | ¿Riesgo real? |
+|---|---|---|---|
+| Content Security Policy (CSP) Header Not Set | El navegador no tiene reglas sobre qué scripts puede ejecutar, lo que facilita inyectar código en la página | Tampering | Sí |
+| Cross-Domain Misconfiguration | La aplicación permite que cualquier otro sitio web lea sus respuestas (CORS abierto) | Information Disclosure | Depende de qué datos exponga cada respuesta |
+| Cross-Domain JavaScript Source File Inclusion | La página carga scripts de servidores de terceros; si ese tercero es comprometido, el script también | Tampering | Depende del tercero |
+| Information Disclosure - Suspicious Comments | El código que llega al navegador tiene comentarios con palabras como "TODO" o "admin" | Information Disclosure | Hay que revisarlo a mano |
+| Timestamp Disclosure - Unix | Aparecen números que parecen fechas | Information Disclosure | Casi siempre un falso positivo |
+| Modern Web Application | Solo informa que el sitio es una aplicación de una sola página | Ninguna | No, es informativa |
+
+Trivy, por su parte, reporta cientos de vulnerabilidades altas y críticas en librerías desactualizadas (Juice Shop está desactualizada a propósito). Esas filas alimentan la columna **Controles de Seguridad Existentes** ("no hay un proceso de actualización de dependencias") y suelen caer en Denial of Service o Elevation of Privilege según la descripción de cada CVE.
+
+**Lo más importante es lo que no aparece.** Ninguno de los dos escaneos detecta los cuatro retos de la sección 4: ni el inicio de sesión con inyección SQL, ni el precio manipulado, ni el carrito ajeno, ni el panel de administración. Son fallas de lógica del negocio y de control de acceso, y solo se encuentran pensando cada flujo del DFD con STRIDE. Un reporte de escaneo limpio no significa un sistema seguro.
+
+### 9.4 Qué entregar
+
+En `entrega/informe.md`, agregue una sección corta con:
+
+1. Dos alertas de ZAP llevadas a la tabla STRIDE (con elemento afectado, categoría y si es riesgo real o falso positivo).
+2. Una conclusión de Trivy sobre la gestión de dependencias.
+3. Una comparación: qué encontró el escaneo, qué encontró el análisis manual, y qué encontraron los dos.
+
+> **Estos escaneos se hacen solo contra el laboratorio, en su propio computador.** El escaneo base de ZAP recorre todas las páginas del sitio y genera cientos de solicitudes: contra el sistema del cliente real o cualquier sistema de terceros, eso ya no es reconocimiento pasivo (sección 5) y requiere autorización por escrito.
+
+---
+
+## 10. Análisis de caso real y panorama tecnológico (opcional)
+
+### 10.1 Caso: la filtración de datos de Equifax (Estados Unidos, 2017)
+
+**Qué pasó.** Equifax, una de las agencias de información crediticia más grandes de Estados Unidos, usaba Apache Struts, una librería de código abierto, en su portal web de reclamaciones. En marzo de 2017 se publicó una vulnerabilidad crítica en Struts (CVE-2017-5638) junto con su corrección. Equifax no actualizó el portal. Desde mediados de mayo de 2017, los atacantes explotaron esa vulnerabilidad, entraron a la red y, durante 76 días, hicieron unas 9.000 consultas a 51 bases de datos. Equifax detectó el acceso en julio y lo anunció en septiembre de 2017. Se expusieron datos personales de al menos 145,5 millones de personas.
+
+La Oficina de Rendición de Cuentas del Gobierno de Estados Unidos (GAO) concluyó que la vulnerabilidad sin corregir fue solo una de varias fallas: la lista de administradores que debía recibir el aviso de actualización estaba desactualizada, y un certificado digital vencido en un equipo de monitoreo impidió detectar a tiempo la salida de los datos.
+
+**Qué falló, en STRIDE.**
+
+| Elemento | Categoría STRIDE | Qué falló |
+|---|---|---|
+| Portal de reclamaciones (proceso expuesto a internet) | Elevation of Privilege | Una librería con vulnerabilidad conocida permitió ejecutar comandos en el servidor |
+| Bases de datos con información personal (almacenes de datos) | Information Disclosure | Una vez dentro, los atacantes pudieron consultar 51 bases de datos sin restricción |
+| Monitoreo del tráfico de salida | Repudiation | Con el certificado vencido, el equipo de monitoreo no inspeccionaba ese tráfico y la salida de datos pasó desapercibida durante meses |
+
+**Relación con la validación técnica.** Es exactamente lo que encuentra Trivy en la sección 9: componentes con vulnerabilidades conocidas y una versión corregida disponible. Pero el caso muestra que tener la herramienta no basta: el aviso existía y no llegó a quien debía actuar. El control que falló fue el proceso, no la tecnología.
+
+**Preguntas para el análisis.**
+
+1. Dibuje el DFD del flujo "un consumidor presenta una reclamación" y marque el límite de confianza que los atacantes cruzaron.
+2. Si Equifax hubiera corrido un escaneo como el de Trivy cada semana, ¿quién debía recibir el reporte y en cuánto tiempo debía actuar? Escríbalo como una mitigación de la tabla STRIDE (con responsable y estado).
+3. ¿Por qué un atacante dentro del portal pudo llegar a 51 bases de datos? ¿Qué control de segmentación o de mínimo privilegio lo habría limitado?
+
+**Fuentes.** [GAO-18-559, "Data Protection: Actions Taken by Equifax and Federal Agencies in Response to the 2017 Breach" (agosto de 2018)](https://www.gao.gov/products/gao-18-559); [CSO Online, "Equifax data breach FAQ"](https://www.csoonline.com/article/567833/equifax-data-breach-faq-what-happened-who-was-affected-what-was-the-impact.html).
+
+### 10.2 Panorama tecnológico
+
+Cada tipo de herramienta mira el sistema desde un ángulo distinto, y ninguna cubre las seis categorías STRIDE por sí sola.
+
+| Tipo | Qué revisa | Ejemplos | Categorías STRIDE que más apoya |
+|---|---|---|---|
+| SAST (análisis estático) | El código fuente, sin ejecutarlo | Semgrep, SonarQube, CodeQL | Tampering, Elevation of Privilege (errores de validación en el código) |
+| DAST (análisis dinámico) | La aplicación en ejecución, desde afuera | OWASP ZAP, Burp Suite | Information Disclosure, Tampering (lo que se ve en la sección 9) |
+| SCA (análisis de componentes) | Las librerías y dependencias, contra bases de CVE | Trivy, OWASP Dependency-Check, Dependabot | Todas, según la vulnerabilidad (caso Equifax) |
+| Detección de secretos | Contraseñas y llaves olvidadas en el código | Gitleaks, escaneo de secretos de GitHub | Spoofing, Information Disclosure |
+| Firewall de aplicaciones web (WAF) | El tráfico que llega a la aplicación, en tiempo real | ModSecurity con OWASP Core Rule Set, Cloudflare WAF, AWS WAF | Tampering, Denial of Service |
+| Gestión de identidad | Autenticación y autorización centralizadas | Keycloak, Microsoft Entra ID, Auth0 | Spoofing, Elevation of Privilege |
+| Registro y monitoreo de seguridad (SIEM) | Los eventos de todos los componentes, para detectar y reconstruir incidentes | Wazuh, Elastic Security, Microsoft Sentinel | Repudiation (caso Equifax: la salida de datos no se detectó) |
+
+### 10.3 Aplicarlo al cliente real
+
+1. Busque un caso público y documentado de incidente de seguridad en el sector del cliente. En Colombia, los reportes del ColCERT y las decisiones de la Superintendencia de Industria y Comercio sobre protección de datos personales son buenas fuentes.
+2. Analícelo con la [plantilla de análisis de caso](../plantillas/plantilla_analisis_caso.md) y guárdelo en `entrega/analisis-caso.md`.
+3. En la sección 5 de la plantilla, compare dos tecnologías del panorama anterior para la amenaza de mayor riesgo de su tabla STRIDE.
+
+---
+
 _Esta guía hace parte del Taller 5 de Evaluación de Seguridad con STRIDE — curso Arquitectura Empresarial, Universidad de La Sabana._

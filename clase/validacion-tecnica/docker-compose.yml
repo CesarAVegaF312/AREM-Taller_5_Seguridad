@@ -1,0 +1,37 @@
+# Laboratorio de validación técnica del Taller 5: OWASP Juice Shop y dos
+# escaneos automatizados, todo en el computador del equipo.
+#
+#   docker compose up -d juice-shop     # levanta la tienda en http://localhost:3000
+#   docker compose run --rm zap         # escaneo pasivo de la aplicación web
+#   docker compose run --rm trivy       # componentes con vulnerabilidades conocidas
+#   docker compose down
+#
+# Los reportes quedan en la carpeta ./reportes
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:v17.3.0
+    ports:
+      - "3000:3000"
+
+  # ZAP en modo base: recorre el sitio y revisa las respuestas, sin atacarlo.
+  zap:
+    image: zaproxy/zap-stable:2.16.0
+    profiles: [escaneo]
+    user: root   # para poder escribir el reporte en ./reportes en Linux
+    command: zap-baseline.py -t http://juice-shop:3000 -r reporte-zap.html -I
+    volumes:
+      - ./reportes:/zap/wrk:rw
+    depends_on: [juice-shop]
+
+  # Trivy: revisa la imagen de Juice Shop contra bases públicas de vulnerabilidades (CVE).
+  trivy:
+    image: aquasec/trivy:0.58.1
+    profiles: [escaneo]
+    command: image --scanners vuln --severity HIGH,CRITICAL --output /reportes/reporte-trivy.txt bkimminich/juice-shop:v17.3.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./reportes:/reportes:rw
+      - trivy-cache:/root/.cache/trivy
+
+volumes:
+  trivy-cache:
