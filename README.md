@@ -89,11 +89,13 @@ taller-05-seguridad-stride/
 │   ├── dfd-cliente.drawio              # DFD del flujo analizado, con límites de confianza
 │   ├── tabla-stride-cliente.xlsx
 │   ├── informe.md                      # Ver plantillas/plantilla_informe_taller.md
+│   ├── analisis-caso.md                # Opcional: ver plantillas/plantilla_analisis_caso.md
 │   └── referencias.md                  # Ver plantillas/plantilla_referencias.md
 └── plantillas/
     ├── plantilla_analisis_stride.xlsx  # Plantilla oficial (hojas Plantilla_STRIDE y Ejemplo_STRIDE)
     ├── plantilla_informe_taller.md
     ├── plantilla_notas.md
+    ├── plantilla_analisis_caso.md
     └── plantilla_referencias.md
 ```
 
